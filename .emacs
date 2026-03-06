@@ -1,5 +1,11 @@
 (require 'package)
 
+;; ===================================
+;; for Org mode settings
+;; ===================================
+(add-to-list 'load-path "~/.emacs.d/lisp")
+(require 'org-setup)
+
 (setq package-archives
       '(("gnu"   . "https://elpa.gnu.org/packages/")
         ("nongnu". "https://elpa.nongnu.org/nongnu/")
@@ -11,7 +17,9 @@
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
- '(package-selected-packages '(tree-mode yaml-mode pdf-tools cmake-mode ztree company)))
+ '(org-agenda-files '("/home/takedamasaaki/org/inbox.org"))
+ '(package-selected-packages
+   '(multiple-cursors gptel lsp-mode magit-stats magit orderless vertico projectile mkdown markdown-mode gh-md markdown-preview-mode tree-mode yaml-mode pdf-tools cmake-mode ztree company)))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
@@ -76,6 +84,17 @@
 ;; ========================================
 ;; 補完モード
 ;; ========================================
-(company-mode t)
+(unless (package-installed-p 'company)
+  (package-refresh-contents)
+  (package-install 'company))
 
+(require 'company)
+(global-company-mode 1)
+(setq company-idle-delay 0.2)
+(setq company-minimum-prefix-length 1)
 
+;; ========================================
+;; プロジェクトごと開く
+;; ========================================
+(projectile-mode +1)
+(define-key projectile-mode-map (kbd "C-c p") 'projectile-command-map)
